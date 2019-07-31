@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,13 +17,25 @@ using System.Web.Http.Cors;
 using System.Web.Http.Description;
 using webWithAccounts.Models;
 
-namespace Ziwava.Controllers
+namespace webWithAccounts.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    [Authorize]
+    
     public class IndawoesController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationUserManager _userManager;
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
         // GET: api/Indawoes
         public List<Indawo> GetIndawoes(string userLocation, string distance, string vibe, string filter)
@@ -73,6 +87,21 @@ namespace Ziwava.Controllers
                 List<Indawo> items = JsonConvert.DeserializeObject<List<Indawo>>(json);
                 return items;
             }
+        }
+        [Route("api/Register")]
+        [HttpGet]
+         public string createUser(string email, string username, string access_token, int expiresIn) {
+            var user = new ApplicationUser() { UserName = username, Email = email };
+            var expiryDate = DateTime.Now.AddMilliseconds(Convert.ToInt64(expiresIn)).AddDays(10);
+            var token = new Token(user.Id, access_token, expiresIn,expiryDate);
+            IdentityResult result =  UserManager.Create(user, "Pa$$w0rd1");
+            if (!result.Succeeded)
+            {
+                return result.Errors.First();
+            }
+            db.Tokens.Add(token);
+            db.SaveChanges();
+            return "success";
         }
 
         // GET: api/Indawoes/5

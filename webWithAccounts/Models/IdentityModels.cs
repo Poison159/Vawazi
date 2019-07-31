@@ -39,5 +39,6 @@ namespace webWithAccounts.Models
         public DbSet<Image> Images { get; set; }
 
         public DbSet<Event> Events { get; set; }
+        public DbSet<Token> Tokens { get; set; }
     }
 }
