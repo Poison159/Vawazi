@@ -259,6 +259,7 @@
     <Compile Include="Controllers\MVC\EventsController.cs" />
     <Compile Include="Controllers\MVC\ImagesController.cs" />
     <Compile Include="Controllers\MVC\IndawoesController.cs" />
+    <Compile Include="Controllers\OperatingHoursController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -272,6 +273,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\Indawo.cs" />
+    <Compile Include="Models\OperatingHours.cs" />
     <Compile Include="Models\Token.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -350,6 +352,11 @@
     <Content Include="Views\Events\Details.cshtml" />
     <Content Include="Views\Events\Edit.cshtml" />
     <Content Include="Views\Events\Index.cshtml" />
+    <Content Include="Views\OperatingHours\Create.cshtml" />
+    <Content Include="Views\OperatingHours\Delete.cshtml" />
+    <Content Include="Views\OperatingHours\Details.cshtml" />
+    <Content Include="Views\OperatingHours\Edit.cshtml" />
+    <Content Include="Views\OperatingHours\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

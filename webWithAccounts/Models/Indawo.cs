@@ -34,6 +34,10 @@ namespace webWithAccounts.Models
         [Required]
         public string imgPath { get; set; }
         [Required]
+        [MaxLength(7)]
+        public OperatingHours[] oparatingHours { get; set; }
+        public string specialInstructions { get; set; }
+        [Required]
         public string instaHandle { get; set; }
         public List<Image> images { get; set; }
         public List<Event> events { get; set; }

@@ -63,6 +63,7 @@ namespace webWithAccounts.Controllers
             foreach (var item in listOfIndawoes) {
                 item.images = db.Images.Where(x => x.indawoId == item.id).ToList();
                 item.events = db.Events.Where(x => x.indawoId == item.id).ToList();
+                item.oparatingHours = db.OperatingHours.Where(x => x.indawoId == item.id).ToArray();
             }
 
 
