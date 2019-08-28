@@ -63,6 +63,13 @@ namespace webWithAccounts.Models
             return finalList;
         }
 
+        public static bool IsEmail(string email) {
+            if (!email.Contains('@')) {
+                return false;
+            }
+            return true;
+        }
+
         private static double Distance(double lon1,double lat1,double lon2,double lat2)
         {
             var R = 6371; // Radius of the earth in km
@@ -160,6 +167,79 @@ namespace webWithAccounts.Models
                 return 0; // failed 
             }
 
+        }
+
+        public static bool assignSatus(Indawo indawo) {
+
+            var dayToday    = DateTime.Now.DayOfWeek;
+            var opHours     = indawo.oparatingHours.FirstOrDefault(x => x.day.ToLower() 
+                                == dayToday.ToString().ToLower());
+            if (opHours == null)
+                return false;
+            var timeNow = DateTime.Now.TimeOfDay;
+            var dateNow = DateTime.Now;
+            var hour = new TimeSpan(1, 0, 0);
+            var timeLeft = opHours.closingHour.TimeOfDay.Subtract(timeNow).Duration();
+            var closingHours = opHours.closingHour.TimeOfDay;
+            if (closingHours.ToString().First() != '0')
+            {
+                return (openOrClosed(opHours));
+            }
+            else {
+                if (getTimeLeft(closingHours, dateNow, timeLeft) > new TimeSpan(0, 0, 0))
+                {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            
+        }
+        public static bool openOrClosed(OperatingHours opHours) {
+            if (opHours.openingHour.TimeOfDay <= DateTime.Now.TimeOfDay
+                && opHours.closingHour.TimeOfDay >= DateTime.Now.TimeOfDay)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool isClosingSoon(Indawo indawo) {
+            var now = DateTime.Now;
+            var dayToday = now.DayOfWeek;
+            var opHours = indawo.oparatingHours.FirstOrDefault(x => x.day.ToLower()
+                            == dayToday.ToString().ToLower());
+            
+            if (opHours != null)
+            {
+                var closingHours = opHours.closingHour.TimeOfDay;
+                var timeNow = DateTime.Now.TimeOfDay;
+                var timeLeft = opHours.closingHour.TimeOfDay.Subtract(timeNow);
+                if (closingHours.ToString().First() == '0')
+                {
+                    timeLeft = getTimeLeft(closingHours, now, timeLeft);
+                }
+                var anHour = new TimeSpan(1, 0, 0);
+
+                if (timeLeft <= anHour && timeLeft > new TimeSpan(0,0,0))
+                    return true;
+                else
+                    return false;
+            }
+            return false;
+        }
+
+        public static TimeSpan getTimeLeft(TimeSpan closingHours, DateTime now, TimeSpan timeLeft) {
+            var numAfterZero = closingHours.ToString().ElementAt(1);
+            var hoursAftertwelve = Convert.ToInt32(numAfterZero.ToString());
+            var timeTilTwelve = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59)
+                .TimeOfDay.Subtract(DateTime.Now.TimeOfDay).Duration();
+            timeLeft = timeTilTwelve + new TimeSpan(hoursAftertwelve, 0, 0); // get minuts and hours from closing hour
+            return timeLeft;
         }
     }
 }

@@ -40,7 +40,8 @@ namespace Ziwava.Controllers.mvc
         // GET: Indawoes/Create
         public ActionResult Create()
         {
-            return View();
+            Indawo indawo = new Indawo();
+            return View(indawo);
         }
 
         // POST: Indawoes/Create
@@ -48,8 +49,9 @@ namespace Ziwava.Controllers.mvc
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,name,lat,lon,address,imgPath,instaHandle")] Indawo indawo)
+        public ActionResult Create([Bind(Include = "id,name,lat,lon,address,rating,type,imgPath,entranceFee,instaHandle,imageUpload")] Indawo indawo)
         {
+            //Check images and Operating hours
             if (ModelState.IsValid)
             {
                 db.Indawoes.Add(indawo);

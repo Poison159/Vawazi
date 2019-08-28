@@ -61,11 +61,13 @@ namespace webWithAccounts.Controllers
             //var listOfIndawoes = LoadJson(@"C:\Users\Siya\Desktop\Indawo.json");
             
             foreach (var item in listOfIndawoes) {
+                var OpHours = db.OperatingHours.Where(x => x.indawoId == item.id).ToArray();
                 item.images = db.Images.Where(x => x.indawoId == item.id).ToList();
                 item.events = db.Events.Where(x => x.indawoId == item.id).ToList();
-                item.oparatingHours = db.OperatingHours.Where(x => x.indawoId == item.id).ToArray();
+                item.oparatingHours = SortHours(OpHours);
+                item.open = Helper.assignSatus(item);
+                item.closingSoon = Helper.isClosingSoon(item);
             }
-
 
             if (!string.IsNullOrEmpty(filter) && filter != "None" && filters.Contains(filter)) {
                 if (filter == "distance")
@@ -75,7 +77,6 @@ namespace webWithAccounts.Controllers
                 else if (filter == "damage")
                     listOfIndawoes = listOfIndawoes.OrderBy(x => x.entranceFee).ToList();
             }
-            
             return listOfIndawoes;
         }
 
@@ -89,9 +90,54 @@ namespace webWithAccounts.Controllers
                 return items;
             }
         }
+
+        public string getNextDay(string curDay)
+        {
+            if (curDay == "Sunday")
+                return "Monday";
+            var days = new List<string> { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+            return days[days.IndexOf(curDay) + 1];
+        }
+
+        public OperatingHours[] SortHours(OperatingHours[] opHors) {
+            var days = new List<string> { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+            List<OperatingHours> final  = new List<OperatingHours>();
+            List<OperatingHours> tempList = new List<OperatingHours>();
+            string dayToday             = DateTime.Now.DayOfWeek.ToString(); // today's operating hours
+            OperatingHours todayOp      = opHors.FirstOrDefault(x => x.day == dayToday);
+
+            if (todayOp == null)
+                return opHors;
+            else {
+                final.Add(todayOp);
+                var nextDay = getNextDay(dayToday);
+                foreach (var item in opHors.Where(x => x.day != dayToday))
+                {
+                    if (item.day != nextDay) {
+                        tempList.Add(item);
+                        continue;
+                    }
+                    nextDay = getNextDay(item.day);
+                    final.Add(item);
+                }
+                foreach (var item in tempList)
+                {
+                    final.Add(item);
+                }
+            }
+            return final.ToArray();
+        }
+
         [Route("api/Register")]
         [HttpGet]
          public string createUser(string email, string username, string access_token, int expiresIn) {
+            if (UserManager.Users.Where(x => x.Email == email).Count() != 0) {
+                return "success";
+            }
+            if (!Helper.IsEmail(email)) {
+                email = Guid.NewGuid().ToString().Split('-').First() + "@ziwava.co.za";
+                username = "user-" + Guid.NewGuid().ToString().Split('-').First();
+            }
             var user = new ApplicationUser() { UserName = username, Email = email };
             var expiryDate = DateTime.Now.AddMilliseconds(Convert.ToInt64(expiresIn)).AddDays(10);
             var token = new Token(user.Id, access_token, expiresIn,expiryDate);
@@ -103,6 +149,24 @@ namespace webWithAccounts.Controllers
             db.Tokens.Add(token);
             db.SaveChanges();
             return "success";
+        }
+        [Route("api/Favorites")]
+        [HttpGet]
+        public List<Indawo> getFavorites(string idString)
+        {
+            var fav = new List<Indawo>();
+            foreach (var item in idString.Split(',').Where(x => x != ""))
+            {
+                fav.Add(db.Indawoes.Find(Convert.ToInt32(item)));
+            }
+            return fav;
+        }
+
+        [Route("api/Events")]
+        [HttpGet]
+        public List<Event> Events()
+        {
+            return db.Events.ToList();
         }
 
         // GET: api/Indawoes/5

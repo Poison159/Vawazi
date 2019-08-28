@@ -14,6 +14,8 @@ namespace webWithAccounts.Models
         {
             images = new List<Image>();
             imgPath = "~/Content/user.png";
+            open = true;
+            closingSoon = false;
         }
         [Required]
         public int id { get; set; }
@@ -33,7 +35,6 @@ namespace webWithAccounts.Models
         public string address { get; set; }
         [Required]
         public string imgPath { get; set; }
-        [Required]
         [MaxLength(7)]
         public OperatingHours[] oparatingHours { get; set; }
         public string specialInstructions { get; set; }
@@ -45,5 +46,7 @@ namespace webWithAccounts.Models
         public HttpPostedFileBase imageUpload { get; set; }
         [NotMapped]
         public double distance { get; set; }
+        public bool open { get; set; }
+        public bool closingSoon { get; set; }
     }
 }

@@ -46,7 +46,7 @@ namespace Ziwava.Controllers.mvc
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,indawoId,description,date,stratTime,endTime")] Event @event)
+        public ActionResult Create([Bind(Include = "id,indawoId,title,description,date,stratTime,endTime")] Event @event)
         {
             if (ModelState.IsValid)
             {

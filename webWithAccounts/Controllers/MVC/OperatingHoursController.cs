@@ -50,6 +50,9 @@ namespace webWithAccounts.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (operatingHours.closingHour.TimeOfDay.ToString().First() == '0') {
+                    operatingHours.closingHour = operatingHours.closingHour.AddDays(1);
+                }
                 db.OperatingHours.Add(operatingHours);
                 db.SaveChanges();
                 return RedirectToAction("Index");

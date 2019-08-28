@@ -259,7 +259,7 @@
     <Compile Include="Controllers\MVC\EventsController.cs" />
     <Compile Include="Controllers\MVC\ImagesController.cs" />
     <Compile Include="Controllers\MVC\IndawoesController.cs" />
-    <Compile Include="Controllers\OperatingHoursController.cs" />
+    <Compile Include="Controllers\MVC\OperatingHoursController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
