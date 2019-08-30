@@ -39,6 +39,16 @@ namespace webWithAccounts.Models
             }
         }
 
+        internal static List<string> getIndawoNames(List<Indawo> list)
+        {
+            var strList = new List<string>();
+            foreach (var item in list)
+            {
+                strList.Add(item.name);
+            }
+            return strList;
+        }
+
         private static Random rng = new Random();
 
         public static void Shuffle<T>(this List<T> list)
@@ -170,35 +180,32 @@ namespace webWithAccounts.Models
         }
 
         public static bool assignSatus(Indawo indawo) {
+            var dateToday   = DateTime.Now;
+            var nextDay   = DateTime.Now.AddDays(1);
+            var dayToday    = dateToday.DayOfWeek;
+            foreach (var item in indawo.oparatingHours)
+            {
+                item.closingHour = new DateTime(dateToday.Year, dateToday.Month, dateToday.Day, item.closingHour.Hour,
+                    item.closingHour.Minute, item.closingHour.Second);
+                if (item.closingHour.TimeOfDay.ToString().First() == '0') {
+                    item.closingHour = new DateTime(nextDay.Year, nextDay.Month, nextDay.Day, item.closingHour.Hour,
+                    item.closingHour.Minute, item.closingHour.Second);
+                }
+                item.openingHour = new DateTime(dateToday.Year, dateToday.Month, dateToday.Day, item.openingHour.Hour,
+                        item.openingHour.Minute, item.openingHour.Second);
 
-            var dayToday    = DateTime.Now.DayOfWeek;
+            }
             var opHours     = indawo.oparatingHours.FirstOrDefault(x => x.day.ToLower() 
                                 == dayToday.ToString().ToLower());
             if (opHours == null)
                 return false;
-            var timeNow = DateTime.Now.TimeOfDay;
-            var dateNow = DateTime.Now;
-            var hour = new TimeSpan(1, 0, 0);
-            var timeLeft = opHours.closingHour.TimeOfDay.Subtract(timeNow).Duration();
-            var closingHours = opHours.closingHour.TimeOfDay;
-            if (closingHours.ToString().First() != '0')
-            {
-                return (openOrClosed(opHours));
-            }
             else {
-                if (getTimeLeft(closingHours, dateNow, timeLeft) > new TimeSpan(0, 0, 0))
-                {
-                    return true;
-                }
-                else {
-                    return false;
-                }
+                return openOrClosed(opHours);
             }
-            
         }
         public static bool openOrClosed(OperatingHours opHours) {
-            if (opHours.openingHour.TimeOfDay <= DateTime.Now.TimeOfDay
-                && opHours.closingHour.TimeOfDay >= DateTime.Now.TimeOfDay)
+            if (opHours.openingHour <= DateTime.Now
+                && opHours.closingHour >= DateTime.Now)
             {
                 return true;
             }
@@ -232,6 +239,29 @@ namespace webWithAccounts.Models
             }
             return false;
         }
+
+        public static bool isOpeningSoon(Indawo indawo)
+        {
+            var now = DateTime.Now;
+            var dayToday = now.DayOfWeek;
+            var opHours = indawo.oparatingHours.FirstOrDefault(x => x.day.ToLower()
+                            == dayToday.ToString().ToLower());
+
+            if (opHours != null)
+            {
+                var closingHours = opHours.openingHour.TimeOfDay;
+                var timeNow = DateTime.Now.TimeOfDay;
+                var timeLeft = opHours.openingHour.TimeOfDay.Subtract(timeNow);
+                var anHour = new TimeSpan(1, 0, 0);
+                if (timeLeft <= anHour && timeLeft > new TimeSpan(0, 0, 0))
+                    return true;
+                else
+                    return false;
+            }
+            return false;
+        }
+
+
 
         public static TimeSpan getTimeLeft(TimeSpan closingHours, DateTime now, TimeSpan timeLeft) {
             var numAfterZero = closingHours.ToString().ElementAt(1);

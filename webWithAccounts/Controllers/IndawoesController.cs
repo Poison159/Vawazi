@@ -49,12 +49,15 @@ namespace webWithAccounts.Controllers
             var filters = new List<string>() { "distance", "rating", "damage" };
             var locations = new List<Indawo>();
             var rnd = new Random();
-            if (!string.IsNullOrEmpty(vibe) && vibe != "All" && vibes.Contains(vibe))
-            {
-                locations = db.Indawoes.Where(x => x.type == vibe).ToList();
+            if (vibe != "All") {
+                foreach (var item in db.Indawoes.ToList())
+                {
+                    if (item.type.ToLower().Trim() == vibe.ToLower().Trim())
+                        locations.Add(item);
+                }
+                locations = locations.OrderBy(x => rnd.Next()).ToList();
             }
-            else
-            {
+            else{
                 locations = db.Indawoes.ToList().OrderBy(x => rnd.Next()).ToList();
             }
             var listOfIndawoes = Helper.GetNearByLocations(lat, lon, Convert.ToInt32(distance), locations); // TODO: Use distance to narrow search
@@ -67,6 +70,7 @@ namespace webWithAccounts.Controllers
                 item.oparatingHours = SortHours(OpHours);
                 item.open = Helper.assignSatus(item);
                 item.closingSoon = Helper.isClosingSoon(item);
+                item.openingSoon = Helper.isOpeningSoon(item);
             }
 
             if (!string.IsNullOrEmpty(filter) && filter != "None" && filters.Contains(filter)) {

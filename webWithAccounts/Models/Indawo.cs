@@ -48,5 +48,6 @@ namespace webWithAccounts.Models
         public double distance { get; set; }
         public bool open { get; set; }
         public bool closingSoon { get; set; }
+        public bool openingSoon { get; set; }
     }
 }
