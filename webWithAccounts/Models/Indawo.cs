@@ -37,7 +37,7 @@ namespace webWithAccounts.Models
         public string imgPath { get; set; }
         [MaxLength(7)]
         public OperatingHours[] oparatingHours { get; set; }
-        public string specialInstructions { get; set; }
+        public List<SpecialInstruction> specialInstructions { get; set; }
         [Required]
         public string instaHandle { get; set; }
         public List<Image> images { get; set; }
@@ -49,5 +49,6 @@ namespace webWithAccounts.Models
         public bool open { get; set; }
         public bool closingSoon { get; set; }
         public bool openingSoon { get; set; }
+
     }
 }

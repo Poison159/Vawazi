@@ -49,7 +49,7 @@ namespace webWithAccounts.Controllers
             var filters = new List<string>() { "distance", "rating", "damage" };
             var locations = new List<Indawo>();
             var rnd = new Random();
-            if (vibe != "All") {
+            if (vibe.ToLower().Trim() != "All".ToLower().Trim()) {
                 foreach (var item in db.Indawoes.ToList())
                 {
                     if (item.type.ToLower().Trim() == vibe.ToLower().Trim())
@@ -67,6 +67,7 @@ namespace webWithAccounts.Controllers
                 var OpHours = db.OperatingHours.Where(x => x.indawoId == item.id).ToArray();
                 item.images = db.Images.Where(x => x.indawoId == item.id).ToList();
                 item.events = db.Events.Where(x => x.indawoId == item.id).ToList();
+                item.specialInstructions = db.SpecialInstructions.Where(x => x.indawoId == item.id).ToList();
                 item.oparatingHours = SortHours(OpHours);
                 item.open = Helper.assignSatus(item);
                 item.closingSoon = Helper.isClosingSoon(item);

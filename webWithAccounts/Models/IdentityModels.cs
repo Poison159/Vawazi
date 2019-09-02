@@ -42,5 +42,7 @@ namespace webWithAccounts.Models
         public DbSet<Token> Tokens { get; set; }
 
         public System.Data.Entity.DbSet<webWithAccounts.Models.OperatingHours> OperatingHours { get; set; }
+
+        public System.Data.Entity.DbSet<webWithAccounts.Models.SpecialInstruction> SpecialInstructions { get; set; }
     }
 }

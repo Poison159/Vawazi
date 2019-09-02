@@ -260,6 +260,7 @@
     <Compile Include="Controllers\MVC\ImagesController.cs" />
     <Compile Include="Controllers\MVC\IndawoesController.cs" />
     <Compile Include="Controllers\MVC\OperatingHoursController.cs" />
+    <Compile Include="Controllers\MVC\SpecialInstructionsController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -274,6 +275,7 @@
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\Indawo.cs" />
     <Compile Include="Models\OperatingHours.cs" />
+    <Compile Include="Models\SpecialInstruction.cs" />
     <Compile Include="Models\Token.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -357,6 +359,11 @@
     <Content Include="Views\OperatingHours\Details.cshtml" />
     <Content Include="Views\OperatingHours\Edit.cshtml" />
     <Content Include="Views\OperatingHours\Index.cshtml" />
+    <Content Include="Views\SpecialInstructions\Create.cshtml" />
+    <Content Include="Views\SpecialInstructions\Delete.cshtml" />
+    <Content Include="Views\SpecialInstructions\Details.cshtml" />
+    <Content Include="Views\SpecialInstructions\Edit.cshtml" />
+    <Content Include="Views\SpecialInstructions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
