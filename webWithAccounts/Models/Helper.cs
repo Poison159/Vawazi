@@ -39,12 +39,12 @@ namespace webWithAccounts.Models
             }
         }
 
-        internal static List<string> getIndawoNames(List<Indawo> list)
+        internal static Dictionary<int,string> getIndawoNames(List<Indawo> list)
         {
-            var strList = new List<string>();
+            var strList = new Dictionary<int,string>();
             foreach (var item in list)
             {
-                strList.Add(item.name);
+                strList.Add(item.id,item.name);
             }
             return strList;
         }

@@ -17,6 +17,7 @@ namespace Ziwava.Controllers.mvc
         // GET: Images
         public ActionResult Index()
         {
+            ViewBag.indawoNames = Helper.getIndawoNames(db.Indawoes.ToList());
             return View(db.Images.ToList());
         }
 

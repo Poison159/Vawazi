@@ -17,6 +17,7 @@ namespace webWithAccounts.Controllers
         // GET: OperatingHours
         public ActionResult Index()
         {
+            ViewBag.indawoNames = Helper.getIndawoNames(db.Indawoes.ToList());
             return View(db.OperatingHours.ToList());
         }
 
@@ -38,6 +39,8 @@ namespace webWithAccounts.Controllers
         // GET: OperatingHours/Create
         public ActionResult Create()
         {
+            ViewBag.indawoId = new SelectList(db.Indawoes, "id", "name");
+            
             return View();
         }
 
@@ -48,6 +51,8 @@ namespace webWithAccounts.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "id,indawoId,day,openingHour,closingHour")] OperatingHours operatingHours)
         {
+            ViewBag.indawoId = new SelectList(db.Indawoes, "id", "name", operatingHours.indawoId);
+            ViewBag.indawoNames = Helper.getIndawoNames(db.Indawoes.ToList());
             if (ModelState.IsValid)
             {
                 if (operatingHours.closingHour.TimeOfDay.ToString().First() == '0') {

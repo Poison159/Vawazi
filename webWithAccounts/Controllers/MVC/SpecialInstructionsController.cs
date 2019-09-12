@@ -17,6 +17,7 @@ namespace webWithAccounts.Controllers.MVC
         // GET: SpecialInstructions
         public ActionResult Index()
         {
+            ViewBag.indawoNames = Helper.getIndawoNames(db.Indawoes.ToList());
             return View(db.SpecialInstructions.ToList());
         }
 
@@ -38,6 +39,7 @@ namespace webWithAccounts.Controllers.MVC
         // GET: SpecialInstructions/Create
         public ActionResult Create()
         {
+            ViewBag.indawoId = new SelectList(db.Indawoes, "id", "name");
             return View();
         }
 
@@ -48,6 +50,7 @@ namespace webWithAccounts.Controllers.MVC
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "id,indawoId,instruction")] SpecialInstruction specialInstruction)
         {
+            ViewBag.indawoId = new SelectList(db.Indawoes, "id", "name", specialInstruction.indawoId);
             if (ModelState.IsValid)
             {
                 db.SpecialInstructions.Add(specialInstruction);
