@@ -59,7 +59,7 @@ namespace Ziwava.Controllers.mvc
                 return RedirectToAction("Index");
             }
 
-            return View(indawo);
+            return RedirectToAction("Create", "Images", new { area = "" });
         }
 
         // GET: Indawoes/Edit/5

@@ -1,5 +1,5 @@
-﻿@model IEnumerable<webWithAccounts.Models.Image>
-
+﻿@model PagedList.IPagedList<webWithAccounts.Models.Image>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Index";
 }
@@ -12,10 +12,10 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.indawoId)
+            @Html.DisplayName("location")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.imgPath)
+            @Html.DisplayName("Image")
         </th>
         <th></th>
     </tr>
@@ -26,14 +26,17 @@
             @ViewBag.indawoNames[item.indawoId]
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.imgPath)
+            <img src="@Url.Content(item.imgPath)" style="height: 100px; width:250px; border-radius:10px;" />
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+            @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.id })
         </td>
     </tr>
 }
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
 </table>
+

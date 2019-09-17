@@ -49,7 +49,7 @@ namespace webWithAccounts.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,indawoId,day,openingHour,closingHour")] OperatingHours operatingHours)
+        public ActionResult Create([Bind(Include = "id,indawoId,day,openingHour,occation,closingHour")] OperatingHours operatingHours)
         {
             ViewBag.indawoId = new SelectList(db.Indawoes, "id", "name", operatingHours.indawoId);
             ViewBag.indawoNames = Helper.getIndawoNames(db.Indawoes.ToList());

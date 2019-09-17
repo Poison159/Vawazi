@@ -40,6 +40,8 @@ namespace webWithAccounts.Controllers
         // GET: api/Indawoes
         public List<Indawo> GetIndawoes(string userLocation, string distance, string vibe, string filter)
         {
+            Helper.IncrementAppStats(db);
+            
             if (userLocation.Split(',')[0] == "undefined") {
                 return null;
             }
@@ -85,6 +87,36 @@ namespace webWithAccounts.Controllers
             return listOfIndawoes;
         }
 
+        [Route("api/IncDirStats")]
+        [HttpGet]
+        public void IncDirStats()
+        {
+            if (db.IndawoStats.Last().dayOfWeek != DateTime.Now.DayOfWeek)
+            {
+                db.IndawoStats.Add(new IndawoStat());
+                db.IndawoStats.Last().dirCounter++;
+            }
+            else
+            {
+                db.IndawoStats.Last().dirCounter++;
+            }
+            db.SaveChanges();
+        }
+        [Route("api/IncInstaStats")]
+        [HttpGet]
+        public void IncInstaStats()
+        {
+            if (db.IndawoStats.Last().dayOfWeek != DateTime.Now.DayOfWeek)
+            {
+                db.IndawoStats.Add(new IndawoStat());
+                db.IndawoStats.Last().instaCounter++;
+            }
+            else
+            {
+                db.IndawoStats.Last().instaCounter++;
+            }
+            db.SaveChanges();
+        }
 
         public List<Indawo> LoadJson(string path)
         {

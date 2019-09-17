@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -15,10 +16,13 @@ namespace Ziwava.Controllers.mvc
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Images
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
+            
             ViewBag.indawoNames = Helper.getIndawoNames(db.Indawoes.ToList());
-            return View(db.Images.ToList());
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            return View(db.Images.ToList().ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Images/Details/5

@@ -114,3 +114,7 @@ c:\users\siya\documents\visual studio 2017\Projects\webWithAccounts\webWithAccou
 c:\users\siya\documents\visual studio 2017\Projects\webWithAccounts\webWithAccounts\bin\Microsoft.AI.Web.xml
 c:\users\siya\documents\visual studio 2017\Projects\webWithAccounts\webWithAccounts\obj\Debug\webWithAccounts.dll
 c:\users\siya\documents\visual studio 2017\Projects\webWithAccounts\webWithAccounts\obj\Debug\webWithAccounts.pdb
+C:\Users\Siya\Documents\Visual Studio 2017\Projects\webWithAccounts\webWithAccounts\bin\PagedList.dll
+C:\Users\Siya\Documents\Visual Studio 2017\Projects\webWithAccounts\webWithAccounts\bin\PagedList.Mvc.dll
+C:\Users\Siya\Documents\Visual Studio 2017\Projects\webWithAccounts\webWithAccounts\bin\PagedList.xml
+C:\Users\Siya\Documents\Visual Studio 2017\Projects\webWithAccounts\webWithAccounts\bin\PagedList.Mvc.xml

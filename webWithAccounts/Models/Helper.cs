@@ -39,6 +39,21 @@ namespace webWithAccounts.Models
             }
         }
 
+        internal static void IncrementAppStats(ApplicationDbContext db)
+        {
+            if (db.AppStats.Count() != 0) {
+                if (db.AppStats.ToList().Last().dayOfWeek != DateTime.Now.DayOfWeek)
+                {
+                    db.AppStats.Add(new AppStat());
+                    db.AppStats.ToList().Last().counter++;
+                }
+                else
+                    db.AppStats.ToList().Last().counter++;
+            }else
+                db.AppStats.Add(new AppStat() { counter = 1 });
+            db.SaveChanges();
+        }
+
         internal static Dictionary<int,string> getIndawoNames(List<Indawo> list)
         {
             var strList = new Dictionary<int,string>();
@@ -49,10 +64,11 @@ namespace webWithAccounts.Models
             return strList;
         }
 
-        private static Random rng = new Random();
+        
 
         public static void Shuffle<T>(this List<T> list)
         {
+            Random rng = new Random();
             int n = list.Count;
             while (n > 1)
             {
@@ -199,20 +215,15 @@ namespace webWithAccounts.Models
                                 == dayToday.ToString().ToLower());
             if (opHours == null)
                 return false;
-            else {
+            else
                 return openOrClosed(opHours);
-            }
         }
         public static bool openOrClosed(OperatingHours opHours) {
             if (opHours.openingHour <= DateTime.Now
                 && opHours.closingHour >= DateTime.Now)
-            {
                 return true;
-            }
             else
-            {
                 return false;
-            }
         }
 
         public static bool isClosingSoon(Indawo indawo) {
@@ -227,9 +238,7 @@ namespace webWithAccounts.Models
                 var timeNow = DateTime.Now.TimeOfDay;
                 var timeLeft = opHours.closingHour.TimeOfDay.Subtract(timeNow);
                 if (closingHours.ToString().First() == '0')
-                {
                     timeLeft = getTimeLeft(closingHours, now, timeLeft);
-                }
                 var anHour = new TimeSpan(1, 0, 0);
 
                 if (timeLeft <= anHour && timeLeft > new TimeSpan(0,0,0))
