@@ -37,6 +37,8 @@ namespace webWithAccounts.Models
         public DbSet<Token> Tokens { get; set; }
         public DbSet<AppStat> AppStats { get; set; }
         public DbSet<IndawoStat> IndawoStats { get; set; }
+        public DbSet<Artist> Artists { get; set; }
+
 
         public System.Data.Entity.DbSet<webWithAccounts.Models.OperatingHours> OperatingHours { get; set; }
 

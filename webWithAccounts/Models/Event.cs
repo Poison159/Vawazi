@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,6 +12,12 @@ namespace webWithAccounts.Models
         public int id { get; set; }
         
         public int indawoId { get; set; }
+        [Required]
+        [DisplayName("latitude")]
+        public string lat { get; set; }
+        [Required]
+        [DisplayName("longitude")]
+        public string lon { get; set; }
         [Required]
         [DisplayName("title")]
         public string title { get; set; }
@@ -40,7 +47,13 @@ namespace webWithAccounts.Models
         public DateTime endTime { get; set; }
         [Required]
         public string imgPath { get; set; }
+        public TimeSpan timeLeft { get; set; }
+        public List<Artist> artists { get; set; }
+        public string artistIds { get; set; }
         [NotMapped]
         public HttpPostedFileBase imageUpload { get; set; }
+        [DisplayName("website url")]
+        public string url { get; set; }
+        public double distance { get; set; }
     }
 }

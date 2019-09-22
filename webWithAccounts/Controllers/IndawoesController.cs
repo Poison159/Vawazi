@@ -199,11 +199,22 @@ namespace webWithAccounts.Controllers
             return fav;
         }
 
-        [Route("api/Events")]
+        [Route("api/Event")]
         [HttpGet]
-        public List<Event> Events()
+        public Event Events(int id,string lat, string lon)
         {
-            return db.Events.ToList();
+            var userLocationLat = Convert.ToDouble(lat, CultureInfo.InvariantCulture);
+            var userLocationLong = Convert.ToDouble(lon, CultureInfo.InvariantCulture);
+            var evnt = db.Events.Find(id);
+            var locationLat = Convert.ToDouble(evnt.lat, CultureInfo.InvariantCulture);
+            var locationLon = Convert.ToDouble(evnt.lon, CultureInfo.InvariantCulture);
+            evnt.artists = db.Artists.ToList(); // TODO: 
+            evnt.date = DateTime.Now.AddDays(8);
+
+            evnt.stratTime = DateTime.Now.AddHours(5).AddMinutes(21);
+            evnt.timeLeft = Helper.calcTimeLeft(evnt.date);
+            evnt.distance = Math.Round(Helper.distanceToo(locationLat, locationLon, userLocationLat, userLocationLong, 'K'));
+            return evnt;
         }
 
         // GET: api/Indawoes/5
@@ -216,7 +227,6 @@ namespace webWithAccounts.Controllers
             {
                 return NotFound();
             }
-
             return Ok(indawo);
         }
 

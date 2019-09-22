@@ -118,7 +118,7 @@ namespace webWithAccounts.Models
             return (rad / Math.PI * 180.0);
         }
 
-        private static double distanceToo(double lat1, double lon1, double lat2, double lon2, char unit)
+        public static double distanceToo(double lat1, double lon1, double lat2, double lon2, char unit)
         {
             if ((lat1 == lat2) && (lon1 == lon2))
             {
@@ -224,6 +224,10 @@ namespace webWithAccounts.Models
                 return true;
             else
                 return false;
+        }
+
+        internal static TimeSpan calcTimeLeft(DateTime endDate){
+            return   endDate - DateTime.Now;
         }
 
         public static bool isClosingSoon(Indawo indawo) {
