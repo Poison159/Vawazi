@@ -52,8 +52,9 @@ namespace webWithAccounts.Controllers
             var filters = new List<string>() { "distance", "rating", "damage" };
             var locations = new List<Indawo>();
             var rnd = new Random();
+            var izizndawo = db.Indawoes.ToList().Where(x => x.id != 9).ToList();
             if (vibe.ToLower().Trim() != "All".ToLower().Trim()) {
-                foreach (var item in db.Indawoes.ToList())
+                foreach (var item in izizndawo)
                 {
                     if (item.type.ToLower().Trim() == vibe.ToLower().Trim())
                         locations.Add(item);
@@ -61,7 +62,7 @@ namespace webWithAccounts.Controllers
                 locations = locations.OrderBy(x => rnd.Next()).ToList();
             }
             else{
-                locations = db.Indawoes.ToList().OrderBy(x => rnd.Next()).ToList();
+                locations = izizndawo.OrderBy(x => rnd.Next()).ToList();
             }
             var listOfIndawoes = Helper.GetNearByLocations(lat, lon, Convert.ToInt32(distance), locations); // TODO: Use distance to narrow search
             //var listOfIndawoes = LoadJson(@"C:\Users\Siya\Desktop\Indawo.json");
@@ -85,7 +86,7 @@ namespace webWithAccounts.Controllers
                 else if (filter == "damage")
                     listOfIndawoes = listOfIndawoes.OrderBy(x => x.entranceFee).ToList();
             }
-            return listOfIndawoes.Where(x =>x.id != 9).ToList();
+            return listOfIndawoes;
         }
 
         [Route("api/IncIndawoStats")]
