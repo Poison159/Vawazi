@@ -13,6 +13,7 @@ namespace webWithAccounts.Models
         public int id { get; set; }
         [Required]
         public int indawoId { get; set; }
+        public string eventName { get; set; }
         [Required]
         public string imgPath { get; set; }
         [NotMapped]

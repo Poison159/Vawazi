@@ -25,6 +25,7 @@ namespace webWithAccounts.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private ApplicationUserManager _userManager;
+        public int MyProperty { get; set; }
         public ApplicationUserManager UserManager
         {
             get
@@ -84,36 +85,26 @@ namespace webWithAccounts.Controllers
                 else if (filter == "damage")
                     listOfIndawoes = listOfIndawoes.OrderBy(x => x.entranceFee).ToList();
             }
-            return listOfIndawoes;
+            return listOfIndawoes.Where(x =>x.id != 9).ToList();
         }
 
-        [Route("api/IncDirStats")]
+        [Route("api/IncIndawoStats")]
         [HttpGet]
-        public void IncDirStats()
+        public void IncDirStats(int indawoId, string plat)
         {
-            if (db.IndawoStats.Last().dayOfWeek != DateTime.Now.DayOfWeek)
-            {
-                db.IndawoStats.Add(new IndawoStat());
+            if (db.IndawoStats.Where(x => x.indawoId == indawoId)
+                .Last().dayOfWeek != DateTime.Now.DayOfWeek){
+                db.IndawoStats.Add(new IndawoStat() { indawoId = indawoId });
+               if(plat == "maps")
                 db.IndawoStats.Last().dirCounter++;
-            }
-            else
-            {
-                db.IndawoStats.Last().dirCounter++;
-            }
-            db.SaveChanges();
-        }
-        [Route("api/IncInstaStats")]
-        [HttpGet]
-        public void IncInstaStats()
-        {
-            if (db.IndawoStats.Last().dayOfWeek != DateTime.Now.DayOfWeek)
-            {
-                db.IndawoStats.Add(new IndawoStat());
+               if(plat == "insta")
                 db.IndawoStats.Last().instaCounter++;
             }
-            else
-            {
-                db.IndawoStats.Last().instaCounter++;
+            else{
+                if (plat == "maps")
+                    db.IndawoStats.Where(x => x.indawoId == indawoId).Last().dirCounter++;
+                if (plat == "insta")
+                    db.IndawoStats.Where(x => x.indawoId == indawoId).Last().instaCounter++;
             }
             db.SaveChanges();
         }
@@ -201,20 +192,59 @@ namespace webWithAccounts.Controllers
 
         [Route("api/Event")]
         [HttpGet]
-        public Event Events(int id,string lat, string lon)
+        public Event Event(int id,string lat, string lon)
         {
-            var userLocationLat = Convert.ToDouble(lat, CultureInfo.InvariantCulture);
-            var userLocationLong = Convert.ToDouble(lon, CultureInfo.InvariantCulture);
-            var evnt = db.Events.Find(id);
-            var locationLat = Convert.ToDouble(evnt.lat, CultureInfo.InvariantCulture);
-            var locationLon = Convert.ToDouble(evnt.lon, CultureInfo.InvariantCulture);
-            evnt.artists = db.Artists.ToList(); // TODO: 
-            evnt.date = DateTime.Now.AddDays(8);
+            int outPut;
+            try
+            {
+                var evnt = db.Events.Find(id);
+                if (int.TryParse(lat[1].ToString(), out outPut) && int.TryParse(lon[0].ToString(), out outPut)) {
+                    var locationLat = Convert.ToDouble(evnt.lat, CultureInfo.InvariantCulture);
+                    var locationLon = Convert.ToDouble(evnt.lon, CultureInfo.InvariantCulture);
+                    var userLocationLat = Convert.ToDouble(lat, CultureInfo.InvariantCulture);
+                    var userLocationLong = Convert.ToDouble(lon, CultureInfo.InvariantCulture);
+                    evnt.distance = Math.Round(Helper.distanceToo(locationLat, locationLon, userLocationLat, userLocationLong, 'K'));
+                }
+                evnt.artists = db.Artists.ToList(); // TODO: set artists indivisually
+                evnt.date = DateTime.Now.AddDays(8);
+                evnt.images = db.Images.Where(x => x.eventName.ToLower().Trim() == evnt.title.ToLower().Trim()).ToList();
+                evnt.stratTime = DateTime.Now.AddHours(5).AddMinutes(21);
+                evnt.timeLeft = Helper.calcTimeLeft(evnt.date);
+                
+                return evnt;
+            }
+            catch {
+                return null;
+            }   
+        }
 
-            evnt.stratTime = DateTime.Now.AddHours(5).AddMinutes(21);
-            evnt.timeLeft = Helper.calcTimeLeft(evnt.date);
-            evnt.distance = Math.Round(Helper.distanceToo(locationLat, locationLon, userLocationLat, userLocationLong, 'K'));
-            return evnt;
+        [Route("api/Events")]
+        [HttpGet]
+        public List<Event> Events(string lat, string lon)
+        {
+            int outPut;
+            try { 
+                var events = db.Events.Take(3).ToList();
+                foreach (var evnt in events)
+                {
+                    if (int.TryParse(lat[1].ToString(), out outPut) && int.TryParse(lon[0].ToString(), out outPut))
+                    {
+                        var userLocationLat = Convert.ToDouble(lat, CultureInfo.InvariantCulture);
+                        var userLocationLong = Convert.ToDouble(lon, CultureInfo.InvariantCulture);
+                        var locationLat = Convert.ToDouble(evnt.lat, CultureInfo.InvariantCulture);
+                        var locationLon = Convert.ToDouble(evnt.lon, CultureInfo.InvariantCulture);
+                        evnt.distance = Math.Round(Helper.distanceToo(locationLat, locationLon, userLocationLat, userLocationLong, 'K'));
+                    }
+                    evnt.artists = db.Artists.ToList(); // TODO: 
+                    evnt.date = DateTime.Now.AddDays(8);
+                    evnt.stratTime = DateTime.Now.AddHours(5).AddMinutes(21);
+                    evnt.timeLeft = Helper.calcTimeLeft(evnt.date);
+                }
+                return events;
+            }
+            catch {
+                return null;
+            }
         }
 
         // GET: api/Indawoes/5

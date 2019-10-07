@@ -216,14 +216,62 @@ namespace webWithAccounts.Models
             if (opHours == null)
                 return false;
             else
-                return openOrClosed(opHours);
+                return openOrClosed(opHours,indawo);
         }
-        public static bool openOrClosed(OperatingHours opHours) {
+        public static bool openOrClosed(OperatingHours opHours,Indawo indawo) {
             if (opHours.openingHour <= DateTime.Now
-                && opHours.closingHour >= DateTime.Now)
+                && opHours.closingHour >= DateTime.Now && CheckDayBefore(opHours,indawo))
                 return true;
             else
                 return false;
+        }
+
+        private static bool CheckDayBefore(OperatingHours opHours, Indawo indawo)
+        {
+            var daybefore = getDayBefore(opHours);
+            OperatingHours dayBeforeOphour = getDayBeforeOpHour(daybefore,indawo);
+            if (dayBeforeOphour != null)
+            {
+                var dayBeforeClosingHour = dayBeforeOphour.closingHour.ToString();
+                if (dayBeforeClosingHour.Split(' ')[1].Substring(0, 5).StartsWith("0"))
+                {
+                    if (dayBeforeOphour.closingHour.Hour > DateTime.Now.Hour)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        private static OperatingHours getDayBeforeOpHour(string daybefore, Indawo indawo)
+        {
+            foreach (var item in indawo.oparatingHours)
+            {
+                if (item.day.ToLower().Trim() == daybefore) {
+                    return item;
+                }
+            }
+            return null;
+        }
+
+        private static string  getDayBefore(OperatingHours opHours)
+        {
+            var dayOfWeek = "monday,tuesday,wednesday,thursday,friday,saturday,sunday".Split(',');
+            var prevDay = "";
+            for (int i = 0; i < dayOfWeek.Count(); i++)
+            {
+                if (opHours.day.ToLower().Trim() == dayOfWeek[i]) {
+                    if (i == 0)
+                    {
+                        prevDay = dayOfWeek[6];
+                    }
+                    else {
+                        prevDay = dayOfWeek[i - 1];
+                    }
+                }
+            }
+            return prevDay;
         }
 
         internal static TimeSpan calcTimeLeft(DateTime endDate){

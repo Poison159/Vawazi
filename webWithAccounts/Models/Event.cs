@@ -52,6 +52,7 @@ namespace webWithAccounts.Models
         public string artistIds { get; set; }
         [NotMapped]
         public HttpPostedFileBase imageUpload { get; set; }
+        public List<Image> images { get; set; }
         [DisplayName("website url")]
         public string url { get; set; }
         public double distance { get; set; }
