@@ -46,24 +46,17 @@ namespace webWithAccounts.Controllers
             if (userLocation.Split(',')[0] == "undefined") {
                 return null;
             }
+            if (string.IsNullOrEmpty(vibe)){
+                return null;
+            }
             var lon = userLocation.Split(',')[0];
             var lat = userLocation.Split(',')[1];
-            var vibes = new List<string>() {"Chilled","Club","Outdoor"};
+            var vibes = new List<string>() {"Chilled","Club","Outdoor", "Pub/Bar" };
             var filters = new List<string>() { "distance", "rating", "damage" };
-            var locations = new List<Indawo>();
             var rnd = new Random();
-            var izizndawo = db.Indawoes.ToList().Where(x => x.id != 9).ToList();
-            if (vibe.ToLower().Trim() != "All".ToLower().Trim()) {
-                foreach (var item in izizndawo)
-                {
-                    if (item.type.ToLower().Trim() == vibe.ToLower().Trim())
-                        locations.Add(item);
-                }
-                locations = locations.OrderBy(x => rnd.Next()).ToList();
-            }
-            else{
-                locations = izizndawo.OrderBy(x => rnd.Next()).ToList();
-            }
+            var locations = db.Indawoes.ToList().Where(x => x.id != 9 
+                && x.type.ToLower().Trim() == vibe.ToLower().Trim()).OrderBy(x => rnd.Next()).ToList(); 
+            
             var listOfIndawoes = Helper.GetNearByLocations(lat, lon, Convert.ToInt32(distance), locations); // TODO: Use distance to narrow search
             //var listOfIndawoes = LoadJson(@"C:\Users\Siya\Desktop\Indawo.json");
             
@@ -76,6 +69,9 @@ namespace webWithAccounts.Controllers
                 item.open = Helper.assignSatus(item);
                 item.closingSoon = Helper.isClosingSoon(item);
                 item.openingSoon = Helper.isOpeningSoon(item);
+                item.info = Helper.getLocationInfo(item);
+                item.openOrClosedInfo = Helper.getClosedStatus(item);
+                Helper.getOpratingHoursStr(item);
             }
 
             if (!string.IsNullOrEmpty(filter) && filter != "None" && filters.Contains(filter)) {
@@ -224,6 +220,7 @@ namespace webWithAccounts.Controllers
         public List<Event> Events(string lat, string lon)
         {
             int outPut;
+            var rnd = new Random();
             try { 
                 var events = db.Events.Take(3).ToList();
                 foreach (var evnt in events)
@@ -241,7 +238,7 @@ namespace webWithAccounts.Controllers
                     evnt.stratTime = DateTime.Now.AddHours(5).AddMinutes(21);
                     evnt.timeLeft = Helper.calcTimeLeft(evnt.date);
                 }
-                return events;
+                return events.OrderBy(x => rnd.Next()).ToList();
             }
             catch {
                 return null;

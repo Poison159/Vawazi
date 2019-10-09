@@ -39,6 +39,58 @@ namespace webWithAccounts.Models
             }
         }
 
+        public static string getLocationInfo(Indawo location) {
+
+            if (location.distance > 1 && location.entranceFee > 0)
+            {
+                return location.distance + "KM | " + "R" + location.entranceFee;
+            }
+            else if (location.distance <= 1 && location.entranceFee == 0)
+            {
+                return "LESS THAN A KM AWAY | " + "FREE ";
+            }
+            else if (location.distance <= 1 && location.entranceFee != 0)
+            {
+                return "LESS THAN A KM AWAY | " + "R" + location.entranceFee;
+            }
+            else if (location.distance > 1 && location.entranceFee == 0)
+            {
+                return location.distance + "KM | " + "FREE";
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        public static string getClosedStatus(Indawo location) {
+            if (location.open == false && location.closingSoon == false && location.openingSoon == false) {
+                return "CLOSED";
+            } else if (location.open == true && location.closingSoon == true) {
+                return "CLOSING SOON";
+            }else if (location.open == false && location.openingSoon == true){
+                return "OPENING SOON";
+            }else if (location.open == true && location.closingSoon == false){
+                return "OPEN";
+            }
+            return "";
+        }
+
+        internal static void getOpratingHoursStr(Indawo item)
+        {
+            var str = "";
+            List<string> retStr = new List<string>();
+            int i = 0;
+            var operatingHours = item.oparatingHours;
+            foreach (var opHour in operatingHours) {
+                i++;
+                str += opHour.day + " | " + opHour.openingHour.ToString().Split(' ')[1].Substring(0, 5) + " to "
+                    + opHour.closingHour.ToString().Split(' ')[1].Substring(0, 5) + " " + opHour.occation ;
+                item.operatingHoursStr.Add(str);
+                str = "";
+            }
+        }
+
         internal static void IncrementAppStats(ApplicationDbContext db)
         {
             if (db.AppStats.Count() != 0) {

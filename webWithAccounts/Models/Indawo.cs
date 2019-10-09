@@ -13,6 +13,7 @@ namespace webWithAccounts.Models
         public Indawo()
         {
             images = new List<Image>();
+            operatingHoursStr = new List<string>();
             imgPath = "~/Content/user.png";
             open = true;
             closingSoon = false;
@@ -46,6 +47,9 @@ namespace webWithAccounts.Models
         public HttpPostedFileBase imageUpload { get; set; }
         [NotMapped]
         public double distance { get; set; }
+        public string info { get; set; }
+        public string openOrClosedInfo { get; set; }
+        public List<string> operatingHoursStr { get; set; }
         public bool open { get; set; }
         public bool closingSoon { get; set; }
         public bool openingSoon { get; set; }
