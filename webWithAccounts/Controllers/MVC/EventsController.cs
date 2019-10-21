@@ -52,11 +52,19 @@ namespace Ziwava.Controllers.mvc
             {
                 db.Events.Add(@event);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("AddArtist", new { id = @event.id });
             }
 
             return View(@event);
         }
+
+        public ActionResult AddArtist(int eventId) {
+
+            var @eventArtist = new ArtistEvent() {eventId = eventId };
+            ViewBag.ArtistId = new SelectList(db.Artists, "id", "name");
+            return View(@eventArtist);
+        }
+
 
         // GET: Events/Edit/5
         public ActionResult Edit(int? id)
@@ -78,7 +86,7 @@ namespace Ziwava.Controllers.mvc
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,indawoId,description,date,stratTime,endTime")] Event @event)
+        public ActionResult Edit([Bind(Include = "id,indawoId,lat,lon,,title,imgPath,description,date,stratTime,endTime,address,price,url")] Event @event)
         {
             if (ModelState.IsValid)
             {

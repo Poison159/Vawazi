@@ -56,10 +56,10 @@ namespace Ziwava.Controllers.mvc
             {
                 db.Indawoes.Add(indawo);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Create", "Images", new { area = "" });
             }
 
-            return RedirectToAction("Create", "Images", new { area = "" });
+            return View();
         }
 
         // GET: Indawoes/Edit/5

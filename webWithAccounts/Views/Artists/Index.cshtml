@@ -1,4 +1,4 @@
-﻿@model IEnumerable<webWithAccounts.Models.Indawo>
+﻿@model IEnumerable<webWithAccounts.Models.Artist>
 
 @{
     ViewBag.Title = "Index";
@@ -15,30 +15,24 @@
             @Html.DisplayNameFor(model => model.name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.lat)
+            @Html.DisplayNameFor(model => model.instaHandle)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.lon)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.address)
+            @Html.DisplayNameFor(model => model.imgPath)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model.OrderBy(x => x.name)) {
+@foreach (var item in Model) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.lat)
+            @Html.DisplayFor(modelItem => item.instaHandle)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.lon)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.address)
+            @Html.DisplayFor(modelItem => item.imgPath)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.id }) |

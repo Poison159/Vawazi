@@ -8,120 +8,109 @@ using System.Web;
 using System.Web.Mvc;
 using webWithAccounts.Models;
 
-namespace webWithAccounts.Controllers
+namespace webWithAccounts.Controllers.MVC
 {
-    public class OperatingHoursController : Controller
+    public class ArtistsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: OperatingHours
+        // GET: Artists
         public ActionResult Index()
         {
-            ViewBag.indawoNames = Helper.getIndawoNames(db.Indawoes.ToList());
-            return View(db.OperatingHours.ToList());
+            return View(db.Artists.ToList());
         }
 
-        // GET: OperatingHours/Details/5
+        // GET: Artists/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            OperatingHours operatingHours = db.OperatingHours.Find(id);
-            if (operatingHours == null)
+            Artist artist = db.Artists.Find(id);
+            if (artist == null)
             {
                 return HttpNotFound();
             }
-            return View(operatingHours);
+            return View(artist);
         }
 
-        // GET: OperatingHours/Create
+        // GET: Artists/Create
         public ActionResult Create()
         {
-            ViewBag.indawoId = new SelectList(db.Indawoes, "id", "name");
-            
             return View();
         }
 
-        // POST: OperatingHours/Create
+        // POST: Artists/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,indawoId,day,openingHour,occation,closingHour")] OperatingHours operatingHours)
+        public ActionResult Create([Bind(Include = "id,name,instaHandle,imgPath")] Artist artist)
         {
-            ViewBag.indawoId = new SelectList(db.Indawoes, "id", "name", operatingHours.indawoId);
-            ViewBag.indawoNames = Helper.getIndawoNames(db.Indawoes.ToList());
             if (ModelState.IsValid)
             {
-                if (operatingHours.closingHour.TimeOfDay.ToString().First() == '0') {
-                    operatingHours.closingHour = operatingHours.closingHour.AddDays(1);
-                }
-                db.OperatingHours.Add(operatingHours);
+                db.Artists.Add(artist);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(operatingHours);
+            return View(artist);
         }
 
-        // GET: OperatingHours/Edit/5
+        // GET: Artists/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            OperatingHours operatingHours = db.OperatingHours.Find(id);
-            if (operatingHours == null)
+            Artist artist = db.Artists.Find(id);
+            if (artist == null)
             {
                 return HttpNotFound();
             }
-            return View(operatingHours);
+            return View(artist);
         }
 
-        // POST: OperatingHours/Edit/5
+        // POST: Artists/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,indawoId,day,openingHour,closingHour")] OperatingHours operatingHours)
+        public ActionResult Edit([Bind(Include = "id,name,instaHandle,imgPath")] Artist artist)
         {
             if (ModelState.IsValid)
             {
-                if (operatingHours.closingHour.TimeOfDay.ToString().First() == '0'){
-                    operatingHours.closingHour = operatingHours.closingHour.AddDays(1);
-                }
-                db.Entry(operatingHours).State = EntityState.Modified;
+                db.Entry(artist).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(operatingHours);
+            return View(artist);
         }
 
-        // GET: OperatingHours/Delete/5
+        // GET: Artists/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            OperatingHours operatingHours = db.OperatingHours.Find(id);
-            if (operatingHours == null)
+            Artist artist = db.Artists.Find(id);
+            if (artist == null)
             {
                 return HttpNotFound();
             }
-            return View(operatingHours);
+            return View(artist);
         }
 
-        // POST: OperatingHours/Delete/5
+        // POST: Artists/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            OperatingHours operatingHours = db.OperatingHours.Find(id);
-            db.OperatingHours.Remove(operatingHours);
+            Artist artist = db.Artists.Find(id);
+            db.Artists.Remove(artist);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

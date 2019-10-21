@@ -29,12 +29,10 @@ namespace webWithAccounts.Models
         public string address { get; set; }
         [Required]
         [DisplayName("price")]
-        public double price { get; set; }
+        public string price { get; set; }
         [Required]
         [DisplayName("date")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime date { get; set; }
+        public string date { get; set; }
         [Required]
         [DisplayName("start time")]
         [DataType(DataType.Time)]

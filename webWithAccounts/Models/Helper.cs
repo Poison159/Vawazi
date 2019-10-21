@@ -270,12 +270,39 @@ namespace webWithAccounts.Models
             else
                 return openOrClosed(opHours,indawo);
         }
+
+        internal static void convertDates(List<Event> list)
+        {
+            foreach (var item in list){
+                item.date = treatDate(item.date);
+            }
+        }
+
+        public static string treatDate(string date)
+        {
+            var retStr = "";
+            var strArr = date.Split(' ');
+            for (int i = 0; i < strArr.Length - 1; i++){
+                retStr += strArr[i] + " ";
+            }
+            return retStr.Trim();
+        }
+
         public static bool openOrClosed(OperatingHours opHours,Indawo indawo) {
             if (opHours.openingHour <= DateTime.Now
                 && opHours.closingHour >= DateTime.Now && CheckDayBefore(opHours,indawo))
                 return true;
             else
                 return false;
+        }
+
+        internal static List<Artist> getArtists(IEnumerable<ArtistEvent> eventArtistIds,ApplicationDbContext db)
+        {
+            List<Artist> artists = new List<Artist>();
+            foreach (var item in eventArtistIds){
+                artists.Add(db.Artists.First(x => x.id == item.artistId));
+            }
+            return artists;
         }
 
         private static bool CheckDayBefore(OperatingHours opHours, Indawo indawo)

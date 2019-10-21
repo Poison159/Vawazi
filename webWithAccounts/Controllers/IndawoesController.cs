@@ -202,12 +202,10 @@ namespace webWithAccounts.Controllers
                     var userLocationLong = Convert.ToDouble(lon, CultureInfo.InvariantCulture);
                     evnt.distance = Math.Round(Helper.distanceToo(locationLat, locationLon, userLocationLat, userLocationLong, 'K'));
                 }
-                evnt.artists = db.Artists.ToList(); // TODO: set artists indivisually
-                evnt.date = DateTime.Now.AddDays(8);
+                var eventArtistIds = db.ArtistEvents.ToList().Where(x => x.eventId == evnt.id);
+                evnt.artists = Helper.getArtists(eventArtistIds, db);
                 evnt.images = db.Images.Where(x => x.eventName.ToLower().Trim() == evnt.title.ToLower().Trim()).ToList();
-                evnt.stratTime = DateTime.Now.AddHours(5).AddMinutes(21);
-                evnt.timeLeft = Helper.calcTimeLeft(evnt.date);
-                
+                evnt.date = Helper.treatDate(evnt.date);
                 return evnt;
             }
             catch {
@@ -233,12 +231,10 @@ namespace webWithAccounts.Controllers
                         var locationLon = Convert.ToDouble(evnt.lon, CultureInfo.InvariantCulture);
                         evnt.distance = Math.Round(Helper.distanceToo(locationLat, locationLon, userLocationLat, userLocationLong, 'K'));
                     }
-                    evnt.artists = db.Artists.ToList(); // TODO: 
-                    evnt.date = DateTime.Now.AddDays(8);
-                    evnt.stratTime = DateTime.Now.AddHours(5).AddMinutes(21);
-                    evnt.timeLeft = Helper.calcTimeLeft(evnt.date);
                 }
-                return events.OrderBy(x => rnd.Next()).ToList();
+                var randEvents = events.OrderBy(x => rnd.Next()).ToList();
+                Helper.convertDates(randEvents);
+                return randEvents;
             }
             catch {
                 return null;

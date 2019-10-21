@@ -98,26 +98,6 @@
                     </div>
                 </div>  
             </div>
-            
-            @{
-                if (Model.images.Count() != 3)
-                {
-                    <div class="col-md-6">
-                        <h4>Images showing vibe at Indawo (images added @Model.images.Count())</h4>
-                        <p>must have 3 and only 3 images to display</p>
-                        <hr />
-                        <div>
-                            <div class="form-group">
-                                @Html.Label("", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    <img src="@Url.Content(Model.images.Add(new webWithAccounts.Models.Image {imgPath }))" style="margin:10px; border-radius:10px;" height="150" ; width="150" id="imagePreview" />
-                                    <input type="file" name="ImageUpload" style="margin:10px; border-radius:10px;" height="60" ; width="60" accept="image/jpeg image/png" onchange="showImagePreview(this, document.getElementById('imagePreview'))" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-            }
         </div>
     </div>
 }

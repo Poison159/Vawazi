@@ -262,6 +262,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IndawoesController.cs" />
+    <Compile Include="Controllers\MVC\ArtistEventsController.cs" />
+    <Compile Include="Controllers\MVC\ArtistsController.cs" />
     <Compile Include="Controllers\MVC\EventsController.cs" />
     <Compile Include="Controllers\MVC\ImagesController.cs" />
     <Compile Include="Controllers\MVC\IndawoesController.cs" />
@@ -276,6 +278,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AppStat.cs" />
     <Compile Include="Models\Artist.cs" />
+    <Compile Include="Models\ArtistEvent.cs" />
     <Compile Include="Models\Coordinates.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\Helper.cs" />
@@ -374,6 +377,17 @@
     <Content Include="Views\SpecialInstructions\Details.cshtml" />
     <Content Include="Views\SpecialInstructions\Edit.cshtml" />
     <Content Include="Views\SpecialInstructions\Index.cshtml" />
+    <Content Include="Views\Events\AddArtist.cshtml" />
+    <Content Include="Views\ArtistEvents\Create.cshtml" />
+    <Content Include="Views\ArtistEvents\Delete.cshtml" />
+    <Content Include="Views\ArtistEvents\Details.cshtml" />
+    <Content Include="Views\ArtistEvents\Edit.cshtml" />
+    <Content Include="Views\ArtistEvents\Index.cshtml" />
+    <Content Include="Views\Artists\Create.cshtml" />
+    <Content Include="Views\Artists\Delete.cshtml" />
+    <Content Include="Views\Artists\Details.cshtml" />
+    <Content Include="Views\Artists\Edit.cshtml" />
+    <Content Include="Views\Artists\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

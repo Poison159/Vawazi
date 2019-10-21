@@ -115,6 +115,6 @@ C:\Users\Siya\Documents\Visual Studio 2017\Projects\webWithAccounts\webWithAccou
 C:\Users\Siya\Documents\Visual Studio 2017\Projects\webWithAccounts\webWithAccounts\bin\Microsoft.AI.ServerTelemetryChannel.xml
 C:\Users\Siya\Documents\Visual Studio 2017\Projects\webWithAccounts\webWithAccounts\bin\Microsoft.AI.WindowsServer.xml
 C:\Users\Siya\Documents\Visual Studio 2017\Projects\webWithAccounts\webWithAccounts\bin\Microsoft.AI.Web.xml
-C:\Users\Siya\Documents\Visual Studio 2017\Projects\webWithAccounts\webWithAccounts\obj\Debug\webWithAccounts.csprojResolveAssemblyReference.cache
-C:\Users\Siya\Documents\Visual Studio 2017\Projects\webWithAccounts\webWithAccounts\obj\Debug\webWithAccounts.dll
-C:\Users\Siya\Documents\Visual Studio 2017\Projects\webWithAccounts\webWithAccounts\obj\Debug\webWithAccounts.pdb
+C:\Users\Siya\Documents\Visual Studio 2017\Projects\webWithAccounts\webWithAccounts\obj\Release\webWithAccounts.dll
+C:\Users\Siya\Documents\Visual Studio 2017\Projects\webWithAccounts\webWithAccounts\obj\Release\webWithAccounts.pdb
+C:\Users\Siya\Documents\Visual Studio 2017\Projects\webWithAccounts\webWithAccounts\obj\Release\webWithAccounts.csprojResolveAssemblyReference.cache
